@@ -1,0 +1,1 @@
+{"description":"A two-sentence horror story where a parent's reassurance becomes the trap — make.fun entry.","engines":{"node":">=22.18"},"license":"MIT","name":"u-suroto-two-sentence-horror-acea9253-bot","private":true,"scripts":{"start":"node main.ts"},"type":"module","version":"1.0.0"}
