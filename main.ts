@@ -2,6 +2,9 @@
 // Writes one original two-sentence horror story to /output/entry.txt.
 // Deterministic: same story, byte for byte, on every run. No network,
 // no randomness, Node 22 stdlib only.
+// Validation gates: exact read-back match, character AND byte length
+// <= 400, no trailing newline, exactly two sentences, and the story
+// ends on a sentence-terminating punctuation mark (. ! ?).
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const OUTPUT_DIR = "/output";
@@ -24,6 +27,15 @@ if (written !== STORY) {
 }
 if (written.length > 400) {
   throw new Error("entry.txt exceeds 400 characters");
+}
+if (Buffer.byteLength(written, "utf8") > 400) {
+  throw new Error("entry.txt exceeds 400 bytes");
+}
+if (written.endsWith("\n")) {
+  throw new Error("entry.txt must not end with a trailing newline");
+}
+if (!/[.!?]["']?$/.test(written)) {
+  throw new Error("entry.txt must end with a sentence-terminating punctuation mark (. ! ?)");
 }
 const sentences = written.split(/[.!?]+["']?\s*/).filter((s) => s.trim().length > 0);
 if (sentences.length !== 2) {
